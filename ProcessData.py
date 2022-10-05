@@ -1,3 +1,4 @@
+import time
 from collections import Counter
 import json
 from list_conditions import list_conditions
@@ -7,7 +8,7 @@ class ProcessData:
 
     def __init__(self):
         self.list_conditions = list_conditions
-        self.rare_floats = self.open_json('floats.json')
+        self.rare_floats = self.open_json('rare_floats.json')
         self.guns_id = []
 
     # открыть json
@@ -80,10 +81,13 @@ class ProcessData:
         name = item.get('name')
         try:
             gun_float = float(item.get('gun_float'))
-        except ValueError:
+        except Exception:
             return False
-        if self.rare_floats.get(name) is not None and gun_float <= self.rare_floats.get(name) and item['self_price'] < \
-                item['suggested_price']:
+        if self.rare_floats.get(name) is None:
+            return False
+        rare_float = float(self.rare_floats.get(name).get('float'))
+        if gun_float <= rare_float:
+            # and item['self_price'] < item['suggested_price']:
             return True
         return False
 
@@ -105,3 +109,4 @@ class ProcessData:
             elif self.is_rare_float(gun_info):
                 bot.send_message(id_channel, text=self.formed_telegram_message(gun_info, rare_float=True))
                 print(self.formed_telegram_message(gun_info, rare_float=True))
+                time.sleep(1)
