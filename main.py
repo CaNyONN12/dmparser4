@@ -19,18 +19,19 @@ def main():
         processed_data.send_to_telegram(raw_guns_info, bot)
         time.sleep(25)
 
-main()
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['startapp'])
 def start_func(message):
     bot.send_message(id_channel, text='бот работает')
     main()
 
-# @bot.message_handler(commands=['startt'])
-# def start_func(message):
-#     bot.send_message(id_channel, text='бот работает')
-#     main()
 
-@bot.message_handler(commands=['stopp'])
+#
+# # @bot.message_handler(commands=['startt'])
+# # def start_func(message):
+# #     bot.send_message(id_channel, text='бот работает')
+# #     main()
+#
+@bot.message_handler(commands=['stopapp'])
 def start_func(message):
     bot.send_message(id_channel, text='бот не работает')
     main.quit()

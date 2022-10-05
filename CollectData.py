@@ -24,7 +24,7 @@ class CollectData:
         self.__raw_guns_info.append({
             'name': item.get('title'),
             'gun_float': item.get('extra').get('floatValue'),
-            "linkid": item.get('extra').get('linkid'),
+            "linkid": item.get('extra').get('linkId'),
             'stickers': gun_stickers,
             'rungame': item.get('extra').get('inspectInGame'),
             'price': (float(item.get('price').get('USD')) / 100),

@@ -73,7 +73,7 @@ class ProcessData:
 
         return {'name': name, 'gun_float': gun_float, 'stickers': stickers, 'price_stickers': price_stickers,
                 'count_same_stickers': count_same_stickers, 'inspect_in_game': inspect_in_game,
-                'link': link, 'self_price': self_price, 'suggested_price': suggested_price
+                'linkid': link, 'self_price': self_price, 'suggested_price': suggested_price
                 }
 
     # проверка на редкий флоат
@@ -98,15 +98,14 @@ class ProcessData:
         for gun_info in guns_info:
             if gun_info.get('classId') in self.guns_id:
                 continue
-
             self.guns_id.append(gun_info.get('classId'))
             gun_info = self.modified_dict(gun_info)
 
             if self.verify_conditions(self.list_conditions, gun_info):
                 bot.send_message(id_channel, text=self.formed_telegram_message(gun_info))
-                print(self.formed_telegram_message(gun_info))
+                # print(self.formed_telegram_message(gun_info))
 
             elif self.is_rare_float(gun_info):
                 bot.send_message(id_channel, text=self.formed_telegram_message(gun_info, rare_float=True))
-                print(self.formed_telegram_message(gun_info, rare_float=True))
+                # print(self.formed_telegram_message(gun_info, rare_float=True))
                 time.sleep(1)
