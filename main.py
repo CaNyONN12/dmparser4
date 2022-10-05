@@ -25,10 +25,10 @@ def start_func(message):
     bot.send_message(id_channel, text='бот работает')
     main()
 
-@bot.message_handler(commands=['startt'])
-def start_func(message):
-    bot.send_message(id_channel, text='бот работает')
-    main()
+# @bot.message_handler(commands=['startt'])
+# def start_func(message):
+#     bot.send_message(id_channel, text='бот работает')
+#     main()
 
 @bot.message_handler(commands=['stopp'])
 def start_func(message):
