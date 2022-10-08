@@ -19,6 +19,11 @@ class ProcessData:
             content = json.loads(file_content)
         return content
 
+    @staticmethod
+    def write_json(name_file, data):
+        with open(name_file, 'w') as file:
+            json.dump(data, file, indent=2, ensure_ascii=False)
+
     # Проверка условий
     @staticmethod
     def verify_conditions(list_conditions_: list, checked_obj: dict) -> bool:
@@ -42,7 +47,7 @@ class ProcessData:
         price_stickers = item.get('price_stickers')
         inspect_in_game = str(item.get('inspect_in_game'))
         count_same_stickers = item.get('count_same_stickers')
-        link = f"https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId={item.get('linkid')}"
+        link = f"{item.get('linkid')}"
         if rare_float:
             return f'#rarefloat \n #{count_same_stickers}\n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Смотреть в игре: {inspect_in_game} \n\n ссылка: {link}'
         return f'#{count_same_stickers} \n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Смотреть в игре: {inspect_in_game} \n\n ссылка: {link}'
@@ -94,11 +99,13 @@ class ProcessData:
     def send_to_telegram(self, guns_info, _bot):
         bot = _bot
         id_channel = '@dmparser152'
-
+        rare_class_id = list(self.open_json('rare_classid.json'))
         for gun_info in guns_info:
-            if gun_info.get('classId') in self.guns_id:
+            if gun_info.get('classId') in rare_class_id:
                 continue
-            self.guns_id.append(gun_info.get('classId'))
+            rare_class_id.append(gun_info.get('classId'))
+            self.write_json('rare_classid.json', rare_class_id)
+
             gun_info = self.modified_dict(gun_info)
 
             if self.verify_conditions(self.list_conditions, gun_info):
@@ -108,4 +115,3 @@ class ProcessData:
             elif self.is_rare_float(gun_info):
                 bot.send_message(id_channel, text=self.formed_telegram_message(gun_info, rare_float=True))
                 # print(self.formed_telegram_message(gun_info, rare_float=True))
-                time.sleep(1)

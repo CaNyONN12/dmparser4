@@ -1,11 +1,18 @@
 import requests
+import json
 
 
 class CollectData:
     def __init__(self):
         self.__dm_url = 'https://api.dmarket.com/exchange/v1/market/items?side=market&orderBy=updated&orderDir=desc&title=&priceFrom=2&priceTo=1540&treeFilters=exterior%5B%5D=factory%20new,exterior%5B%5D=minimal%20wear,exterior%5B%5D=field-tested,exterior%5B%5D=well-worn,exterior%5B%5D=battle-scarred,category_1%5B%5D=not_souvenir&gameId=a8db&types=dmarket&cursor=&limit=100&currency=USD'
         self.__raw_guns_info = []
-        self.__guns_id = []
+
+    @staticmethod
+    def open_json(name_file: str) -> dict:
+        with open(name_file) as file:
+            file_content = file.read()
+            content = json.loads(file_content)
+        return content
 
     # Получить список стикеров предмета
     @staticmethod
@@ -31,7 +38,6 @@ class CollectData:
             'suggestedPrice': (float(item.get('suggestedPrice').get('USD')) / 100),
             'classId': item.get('classId')
         })
-        self.__guns_id.append(item.get('classId'))
 
     # Собрать данные о предмете для обработки
     def collect_data(self):
@@ -45,6 +51,7 @@ class CollectData:
         for item in items:
             gun_stickers = self.__get_gun_stickers(item)
             class_id = item.get('classId')
-            if class_id not in self.__guns_id:
+            guns_id = list(self.open_json('rare_classid.json'))
+            if class_id not in guns_id:
                 self.__add_gun_info(item, gun_stickers)
         return self.__raw_guns_info

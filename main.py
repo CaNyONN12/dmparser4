@@ -15,9 +15,18 @@ def main():
     bot.send_message(id_channel, text='бот работает')
 
     while True:
-        raw_guns_info = raw_data.collect_data()
-        processed_data.send_to_telegram(raw_guns_info, bot)
-        time.sleep(25)
+        try:
+            raw_guns_info = raw_data.collect_data()
+            processed_data.send_to_telegram(raw_guns_info, bot)
+            time.sleep(25)
+        except Exception:
+            time.sleep(240)
+            continue
+
+
+#
+#
+# main()
 
 @bot.message_handler(commands=['startapp'])
 def start_func(message):
@@ -26,11 +35,13 @@ def start_func(message):
 
 
 #
-# # @bot.message_handler(commands=['startt'])
-# # def start_func(message):
-# #     bot.send_message(id_channel, text='бот работает')
-# #     main()
 #
+# #
+# # # @bot.message_handler(commands=['startt'])
+# # # def start_func(message):
+# # #     bot.send_message(id_channel, text='бот работает')
+# # #     main()
+# #
 @bot.message_handler(commands=['stopapp'])
 def start_func(message):
     bot.send_message(id_channel, text='бот не работает')
