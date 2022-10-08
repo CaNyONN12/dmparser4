@@ -12,7 +12,6 @@ processed_data = ProcessData()
 
 
 def main():
-    bot.send_message(id_channel, text='бот работает')
 
     while True:
         try:
