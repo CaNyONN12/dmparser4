@@ -1,2 +1,2 @@
-s = 'text'
-s = float(s)
+import requests
+

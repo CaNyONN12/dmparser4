@@ -12,20 +12,21 @@ processed_data = ProcessData()
 
 
 def main():
-
+    bot.send_message(id_channel, text='бот работает')
     while True:
         try:
             raw_guns_info = raw_data.collect_data()
             processed_data.send_to_telegram(raw_guns_info, bot)
             time.sleep(25)
-        except Exception:
+        except Exception as ex:
+            print('gg')
             time.sleep(240)
             continue
 
 
 #
 #
-# main()
+main()
 
 @bot.message_handler(commands=['startapp'])
 def start_func(message):

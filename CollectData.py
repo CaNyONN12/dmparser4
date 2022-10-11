@@ -1,3 +1,5 @@
+import random
+from list_conditions import proxy_list, login, password, user_agents_list
 import requests
 import json
 
@@ -41,10 +43,14 @@ class CollectData:
 
     # Собрать данные о предмете для обработки
     def collect_data(self):
+        user_agent = random.choice(user_agents_list)
+        proxy = random.choice(proxy_list)
         proxies = {
-            "http": f"http://{'rmLcmR'}:{'vB5BrN'}@{'104.227.96.242:9890'}"
+            "http": f"http://{login}:{password}@{proxy}",
         }
-        request = requests.get(url=self.__dm_url, proxies=proxies)
+
+        request = requests.get(url=self.__dm_url, headers={'user-agent': user_agent},
+                               proxies=proxies)
         data = request.json()
         items = data.get('objects')
 

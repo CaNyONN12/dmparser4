@@ -1,4 +1,3 @@
-import time
 from collections import Counter
 import json
 from list_conditions import list_conditions
@@ -45,12 +44,12 @@ class ProcessData:
         sugg_price = item.get('suggested_price')
         stickers = item.get('stickers')
         price_stickers = item.get('price_stickers')
-        inspect_in_game = str(item.get('inspect_in_game'))
+        screenshot = str(item.get('screenshot'))
         count_same_stickers = item.get('count_same_stickers')
         link = f"{item.get('linkid')}"
         if rare_float:
-            return f'#rarefloat \n #{count_same_stickers}\n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Смотреть в игре: {inspect_in_game} \n\n ссылка: {link}'
-        return f'#{count_same_stickers} \n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Смотреть в игре: {inspect_in_game} \n\n ссылка: {link}'
+            return f'#rarefloat \n #{count_same_stickers}\n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Скриншот: {screenshot} \n\n ссылка: {link}'
+        return f'#{count_same_stickers} \n {name} \n Флоат: {gun_float} \n Цена оружия: {self_price}$ \n средняя цена оружия: {sugg_price} \n \n Стикеры: {stickers} \n \n Общая цена стикеров: {price_stickers}$ \n\n Скриншот: {screenshot} \n\n ссылка: {link}'
 
     # получить суммарную стоимость стикеров на скине
     def get_sum_stickers(self, gun_info: dict) -> float:
@@ -72,12 +71,13 @@ class ProcessData:
         price_stickers = self.get_sum_stickers(item)
         count_same_stickers = max(Counter(stickers).values())
         inspect_in_game = str(item.get('rungame'))
+        screenshot = f'https://market.swap.gg/screenshot?inspectLink={inspect_in_game}'
         link = f"https://dmarket.com/ingame-items/item-list/csgo-skins?userOfferId={item.get('linkid')}"
         self_price = item.get('price')
         suggested_price = item.get('suggestedPrice')
 
         return {'name': name, 'gun_float': gun_float, 'stickers': stickers, 'price_stickers': price_stickers,
-                'count_same_stickers': count_same_stickers, 'inspect_in_game': inspect_in_game,
+                'count_same_stickers': count_same_stickers, 'screenshot': screenshot,
                 'linkid': link, 'self_price': self_price, 'suggested_price': suggested_price
                 }
 
@@ -107,7 +107,6 @@ class ProcessData:
             self.write_json('rare_classid.json', rare_class_id)
 
             gun_info = self.modified_dict(gun_info)
-
             if self.verify_conditions(self.list_conditions, gun_info):
                 bot.send_message(id_channel, text=self.formed_telegram_message(gun_info))
                 # print(self.formed_telegram_message(gun_info))
