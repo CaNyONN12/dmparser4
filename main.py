@@ -26,7 +26,6 @@ def main():
 
 #
 #
-main()
 
 @bot.message_handler(commands=['startapp'])
 def start_func(message):
