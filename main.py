@@ -3,8 +3,8 @@ from CollectData import CollectData
 from ProcessData import ProcessData
 import telebot
 
-TOKEN = '5594906195:AAEIkOOJZ8-8uGQKcTzkDOroZ8oBz_qiStk'
-id_channel = '@dmparser152'
+# TOKEN = '5594906195:AAEIkOOJZ8-8uGQKcTzkDOroZ8oBz_qiStk'
+# id_channel = '@dmparser152'
 bot = telebot.TeleBot(TOKEN)
 
 raw_data = CollectData()
